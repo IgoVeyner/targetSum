@@ -1,13 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
+import { useState } from 'react'
 
 import RandomNumber from './RandomNumber'
 
 const Game = ({ randomNumberCount }) => {
 
+  const [selectedNumbers, setSelectedNumbers] = useState([0, 4])
+
   const propTypes = {
     randomNumberCount: PropTypes.number.isRequired,
+  }
+
+  const isNumberSelected = (index) => {
+    return selectedNumbers.indexOf(index) >= 0
   }
 
   // TODO: Shuffle the random numbers.
@@ -21,7 +28,11 @@ const Game = ({ randomNumberCount }) => {
 
   const renderNumbers = () => {
     return randomNumbers.map((num, index) => {
-      return <RandomNumber key={`${num}-${index}`} num={num} />
+      return <RandomNumber 
+        key={index} 
+        num={num} 
+        isSelected={isNumberSelected(index)}
+      />
     })
   }
 
@@ -54,16 +65,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around'
-  },
-
-  random: {
-    backgroundColor: '#999',
-    width: 100,
-    height: 50,
-    marginHorizontal: 15,
-    marginVertical: 25,
-    fontSize: 35,
-    textAlign: 'center',
   },
 })
 
