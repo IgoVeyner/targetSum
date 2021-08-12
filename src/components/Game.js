@@ -7,7 +7,7 @@ import RandomNumber from './RandomNumber'
 
 const Game = ({ randomNumbers, target }) => {
 
-  const [selectedNumbers, setSelectedNumbers] = useState([])
+  const [selectedIds, setSelectedIds] = useState([])
 
   const propTypes = {
     randomNumbers: PropTypes.array.isRequired,
@@ -15,12 +15,30 @@ const Game = ({ randomNumbers, target }) => {
   }
 
   const isNumberSelected = (index) => {
-    return selectedNumbers.indexOf(index) >= 0
+    return selectedIds.indexOf(index) >= 0
   }
 
   const selectNumber = (index) => {
-    setSelectedNumbers(() => [...selectedNumbers, index])
+    setSelectedIds(() => [...selectedIds, index])
   }
+
+  const gameStatus = () => {
+    const sumSelected = selectedIds.reduce((acc, curr) => {
+      return acc + randomNumbers[curr]
+    }, 0)
+
+    if (sumSelected < target) {
+      return 'PLAYING'
+    }
+    if (sumSelected === target) {
+      return "WON"
+    }
+    if (sumSelected > target) {
+      return "LOST"
+    }
+  }
+
+  const currentStatus = gameStatus()
 
   const renderNumbers = () => {
     return randomNumbers.map((num, index) => {
@@ -40,6 +58,7 @@ const Game = ({ randomNumbers, target }) => {
       <View style={styles.randomContainer}>
         {renderNumbers()}
       </View>
+      <Text>{currentStatus}</Text>
     </View>
   )
 }
