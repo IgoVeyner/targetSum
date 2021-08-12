@@ -21,6 +21,7 @@ export default function App() {
       <Game 
         randomNumbers={randomNumbers} 
         target={target}
+        initialSeconds={10}
         />
     </>
   );

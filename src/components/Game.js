@@ -1,18 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import RandomNumber from './RandomNumber'
 
-const Game = ({ randomNumbers, target }) => {
+const Game = ({ randomNumbers, target, initialSeconds }) => {
 
   const [selectedIds, setSelectedIds] = useState([])
+  const [remainingSeconds, setRemainingSeconds] = useState(initialSeconds)
 
   const propTypes = {
     randomNumbers: PropTypes.array.isRequired,
     target: PropTypes.number.isRequired,
   }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setRemainingSeconds(remainingSeconds - 1)
+    }, 1000)
+
+    if (remainingSeconds === 0) {
+      clearInterval(intervalId)
+    }
+
+    return () => {
+      clearInterval(intervalId)
+    };
+  }, [remainingSeconds]);
 
   const isNumberSelected = (index) => {
     return selectedIds.indexOf(index) >= 0
@@ -27,6 +42,9 @@ const Game = ({ randomNumbers, target }) => {
       return acc + randomNumbers[curr]
     }, 0)
 
+    if (remainingSeconds === 0) {
+      return "LOST"
+    }
     if (sumSelected < target) {
       return 'PLAYING'
     }
@@ -62,7 +80,7 @@ const Game = ({ randomNumbers, target }) => {
       <View style={styles.randomContainer}>
         {renderNumbers()}
       </View>
-      <Text>{currentStatus}</Text>
+      <Text>{remainingSeconds}</Text>
     </View>
   )
 }
