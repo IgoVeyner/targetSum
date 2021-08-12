@@ -6,7 +6,7 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <Game />
+      <Game randomNumberCount={6}/>
     </>
   );
 }
