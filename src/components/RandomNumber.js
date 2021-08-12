@@ -12,6 +12,7 @@ const RandomNumber = ({ num, id, isDisabled, onPress }) => {
   }
 
   const handlePress = () => {
+    if (isDisabled) { return }
     onPress(id)
   }
 

@@ -5,12 +5,13 @@ import { useState } from 'react'
 
 import RandomNumber from './RandomNumber'
 
-const Game = ({ randomNumberCount, randomNumbers, target }) => {
+const Game = ({ randomNumbers, target }) => {
 
   const [selectedNumbers, setSelectedNumbers] = useState([])
 
   const propTypes = {
-    randomNumberCount: PropTypes.number.isRequired,
+    randomNumbers: PropTypes.array.isRequired,
+    target: PropTypes.number.isRequired,
   }
 
   const isNumberSelected = (index) => {
