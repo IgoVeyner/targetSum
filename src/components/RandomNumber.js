@@ -2,19 +2,22 @@ import React from 'react'
 import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
 
-const RandomNumber = ({ num, isSelected }) => {
+const RandomNumber = ({ num, id, isDisabled, onPress }) => {
 
   const propTypes = {
-    number: PropTypes.number.isRequired,
-    isSelected: PropTypes.bool.isRequired,
+    num: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
+    onPress: PropTypes.func.isRequired,
   }
 
   const handlePress = () => {
+    onPress(id)
   }
 
   return (
     <TouchableOpacity onPress={handlePress}>
-      <Text style={[styles.random, isSelected && styles.selected]}>{num}</Text>
+      <Text style={[styles.random, isDisabled && styles.selected]}>{num}</Text>
     </TouchableOpacity>
   )
 }

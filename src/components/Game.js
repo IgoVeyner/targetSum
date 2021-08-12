@@ -5,9 +5,9 @@ import { useState } from 'react'
 
 import RandomNumber from './RandomNumber'
 
-const Game = ({ randomNumberCount }) => {
+const Game = ({ randomNumberCount, randomNumbers, target }) => {
 
-  const [selectedNumbers, setSelectedNumbers] = useState([0, 4])
+  const [selectedNumbers, setSelectedNumbers] = useState([])
 
   const propTypes = {
     randomNumberCount: PropTypes.number.isRequired,
@@ -17,21 +17,18 @@ const Game = ({ randomNumberCount }) => {
     return selectedNumbers.indexOf(index) >= 0
   }
 
-  // TODO: Shuffle the random numbers.
-  const randomNumbers = Array
-    .from({ length: randomNumberCount })
-    .map(() => 1 + Math.floor(10 * Math.random()))
-
-  const target = randomNumbers
-    .slice(0, randomNumberCount - 2)
-    .reduce((acc, curr) => acc + curr, 0)
+  const selectNumber = (index) => {
+    setSelectedNumbers(() => [...selectedNumbers, index])
+  }
 
   const renderNumbers = () => {
     return randomNumbers.map((num, index) => {
       return <RandomNumber 
         key={index} 
+        id={index}
         num={num} 
-        isSelected={isNumberSelected(index)}
+        isDisabled={isNumberSelected(index)}
+        onPress={selectNumber}
       />
     })
   }
