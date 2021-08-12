@@ -46,7 +46,9 @@ const Game = ({ randomNumbers, target }) => {
         key={index} 
         id={index}
         num={num} 
-        isDisabled={isNumberSelected(index)}
+        isDisabled={
+          isNumberSelected(index) || currentStatus !== "PLAYING"
+        }
         onPress={selectNumber}
       />
     })
@@ -54,7 +56,9 @@ const Game = ({ randomNumbers, target }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.target}>{target}</Text>
+      <Text style={[styles.target, styles[`STATUS_${currentStatus}`]]}>
+        {target}
+      </Text>
       <View style={styles.randomContainer}>
         {renderNumbers()}
       </View>
@@ -67,12 +71,11 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: "30px",
     backgroundColor: '#ddd',
-    flex: 1
+    flex: 1,
   },
 
   target: {
     fontSize: 40,
-    backgroundColor: '#aaa',
     margin: 50,
     textAlign: 'center',
   },
@@ -81,8 +84,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
+
+  STATUS_PLAYING: {
+    backgroundColor: '#bbb',
+  },
+
+  STATUS_WON: {
+    backgroundColor: 'green',
+  },
+
+  STATUS_LOST: {
+    backgroundColor: 'red',
+  } 
 })
 
 export default Game
