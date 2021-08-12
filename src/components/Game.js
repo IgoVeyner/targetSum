@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
 
+import RandomNumber from './RandomNumber'
+
 const Game = ({ randomNumberCount }) => {
 
   const propTypes = {
@@ -19,9 +21,7 @@ const Game = ({ randomNumberCount }) => {
 
   const renderNumbers = () => {
     return randomNumbers.map((num, index) => {
-      return (
-        <Text style={styles.random} key={`${num}-${index}`}>{num}</Text>
-      ) 
+      return <RandomNumber key={`${num}-${index}`} num={num} />
     })
   }
 
