@@ -75,6 +75,7 @@ const Game = ({ randomNumbers, target, initialSeconds }) => {
       </View>
       <Timer 
         initialSeconds={initialSeconds} 
+        gameStatus={gameStatus}
         setGameStatus={setGameStatus}
         calcGameStatus={calcGameStatus}
       />
