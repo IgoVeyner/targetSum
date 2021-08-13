@@ -15,11 +15,13 @@ export default function App() {
     .slice(0, randomNumberCount - 2)
     .reduce((acc, curr) => acc + curr, 0)
 
+  const shuffledRandomNumbers = randomNumbers.sort(() => Math.random() - 0.5)
+
   return (
     <>
       <StatusBar style="auto" />
       <Game 
-        randomNumbers={randomNumbers} 
+        randomNumbers={shuffledRandomNumbers} 
         target={target}
         initialSeconds={10}
         />
