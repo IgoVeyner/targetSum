@@ -10,10 +10,8 @@ const Timer = ({ initialSeconds, gameStatus, setGameStatus, calcGameStatus }) =>
       setRemainingSeconds(remainingSeconds - 1)
     }, 1000)
     
-    if (gameStatus === "WON") {
+    if (gameStatus !== "PLAYING") {
       clearInterval(intervalId)
-      setRemainingSeconds(0)
-      return
     }
 
     if (remainingSeconds === 0) {
