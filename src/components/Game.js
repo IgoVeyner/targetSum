@@ -4,45 +4,36 @@ import { View, Text, StyleSheet } from 'react-native'
 import { useState, useEffect } from 'react'
 
 import RandomNumber from './RandomNumber'
+import Timer from './Timer'
 
 const Game = ({ randomNumbers, target, initialSeconds }) => {
 
   const [selectedIds, setSelectedIds] = useState([])
-  const [remainingSeconds, setRemainingSeconds] = useState(initialSeconds)
+  const [gameStatus, setGameStatus] = useState("PLAYING")
 
   const propTypes = {
     randomNumbers: PropTypes.array.isRequired,
     target: PropTypes.number.isRequired,
   }
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setRemainingSeconds(remainingSeconds - 1)
-    }, 1000)
-
-    if (remainingSeconds === 0) {
-      clearInterval(intervalId)
-    }
-
-    return () => {
-      clearInterval(intervalId)
-    };
-  }, [remainingSeconds]);
-
   const isNumberSelected = (index) => {
     return selectedIds.indexOf(index) >= 0
+  }
+
+  const setNewGameStatus = () => {
+    setGameStatus(calcGameStatus())
   }
 
   const selectNumber = (index) => {
     setSelectedIds(() => [...selectedIds, index])
   }
 
-  const gameStatus = () => {
+  const calcGameStatus = (timerOver = false) => {
     const sumSelected = selectedIds.reduce((acc, curr) => {
       return acc + randomNumbers[curr]
     }, 0)
 
-    if (remainingSeconds === 0) {
+    if (timerOver) {
       return "LOST"
     }
     if (sumSelected < target) {
@@ -56,8 +47,6 @@ const Game = ({ randomNumbers, target, initialSeconds }) => {
     }
   }
 
-  const currentStatus = gameStatus()
-
   const renderNumbers = () => {
     return randomNumbers.map((num, index) => {
       return <RandomNumber 
@@ -65,22 +54,30 @@ const Game = ({ randomNumbers, target, initialSeconds }) => {
         id={index}
         num={num} 
         isDisabled={
-          isNumberSelected(index) || currentStatus !== "PLAYING"
+          isNumberSelected(index) || gameStatus !== "PLAYING"
         }
         onPress={selectNumber}
       />
     })
   }
 
+  useEffect(() => {
+    setNewGameStatus()
+  }, [selectedIds]);
+
   return (
     <View style={styles.container}>
-      <Text style={[styles.target, styles[`STATUS_${currentStatus}`]]}>
+      <Text style={[styles.target, styles[`STATUS_${gameStatus}`]]}>
         {target}
       </Text>
       <View style={styles.randomContainer}>
         {renderNumbers()}
       </View>
-      <Text>{remainingSeconds}</Text>
+      <Timer 
+        initialSeconds={initialSeconds} 
+        setGameStatus={setGameStatus}
+        calcGameStatus={calcGameStatus}
+      />
     </View>
   )
 }
