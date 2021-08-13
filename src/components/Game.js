@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Button } from 'react-native'
 import { useState, useEffect } from 'react'
 
 import RandomNumber from './RandomNumber'
 import Timer from './Timer'
 
-const Game = ({ randomNumbers, target, initialSeconds }) => {
+const Game = ({ randomNumbers, target, initialSeconds, onPlayAgain }) => {
 
   const [selectedIds, setSelectedIds] = useState([])
   const [gameStatus, setGameStatus] = useState("PLAYING")
@@ -14,6 +14,8 @@ const Game = ({ randomNumbers, target, initialSeconds }) => {
   const propTypes = {
     randomNumbers: PropTypes.array.isRequired,
     target: PropTypes.number.isRequired,
+    initialSeconds: PropTypes.number.isRequired,
+    onPlayAgain: PropTypes.func.isRequired,
   }
 
   const isNumberSelected = (index) => {
@@ -73,6 +75,9 @@ const Game = ({ randomNumbers, target, initialSeconds }) => {
       <View style={styles.randomContainer}>
         {renderNumbers()}
       </View>
+      {gameStatus !== "PLAYING" && (
+        <Button title="Play Again" onPress={onPlayAgain} />
+      )}
       <Timer 
         initialSeconds={initialSeconds} 
         gameStatus={gameStatus}
